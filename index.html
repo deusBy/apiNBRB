@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script>
+		$(function() {
+			
+
+			var f = function() {
+				$.ajax({
+					'type': 'get',
+					'data': $('form').serialize(),
+					'url': 'currency.php',
+					'success': function(data) {
+						let val = JSON.parse(data);
+						$('#rate').empty();
+						$('#rate').append("; Курс "+val.rate);
+						$('#val').empty();
+						$('#val').append(" "+val.result);
+					},
+					'error': function(msg) {
+						alert(msg);
+					}
+				});
+			};
+
+			$('#amount').on('keyup', f); 
+			$('#send').on('click', f);
+
+		});
+	</script>
+	<style>
+	.container{
+		display: flex;
+	}
+
+	.container div {
+		padding: 10px;
+	}
+</style>
+</head>	
+
+
+<body>
+	
+	<form action="currency.php" method="GET">
+		<div class="container"> 
+			<div>
+				<label for="date">Дата</label>
+				<input name="date" type="date">
+			</div>
+			<div>
+				<input type="number" name="amount" id="amount" min=0>
+			</div>
+			<div>
+				<select name="currency" id="">
+					<option value="BYN">BYN</option>
+					<option value="RUB">RUB</option>
+					<option value="USD">USD</option>
+					<option value="EUR">EUR</option>
+				</select>
+			</div>
+			<div> > </div>
+			<div>
+				<select name="currency2" id="">
+					<option value="BYN">BYN</option>
+					<option value="RUB">RUB</option>
+					<option value="USD">USD</option>
+					<option value="EUR">EUR</option>
+				</select>
+			</div>
+			<p><span id="val"></span> <span id="rate"></span></p>
+			<p> <input type="button" name="submit" id="send" value="Send"> </button></p>
+		</form>
+	</body>
+	</html>
